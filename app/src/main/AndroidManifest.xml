@@ -21,6 +21,7 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MusicManagementActivity" />
         <activity android:name=".MusicListActivity" />
+        <activity android:name=".UpdateProfileActivity" />
 
     </application>
 

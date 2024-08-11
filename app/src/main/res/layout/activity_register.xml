@@ -70,8 +70,8 @@
 
     <ImageView
         android:id="@+id/customBackButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/back_button"
         android:contentDescription="Back"
         android:layout_alignParentStart="true"

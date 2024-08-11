@@ -42,7 +42,7 @@ public class MusicListActivity extends BaseActivity  {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private Button addMusicButton, logoutButton, sortButton;
+    private Button addMusicButton, logoutButton, updateProfileButton ;
 
     private SearchView searchView;
     private String currentQuery = "";
@@ -61,7 +61,7 @@ public class MusicListActivity extends BaseActivity  {
         addMusicButton = findViewById(R.id.addMusicButton);
         logoutButton = findViewById(R.id.logoutButton);
         searchView = findViewById(R.id.searchView);
-
+        updateProfileButton = findViewById(R.id.updateProfileButton);
 
         musicList = new ArrayList<>();
         musicKeys = new ArrayList<>();
@@ -69,6 +69,14 @@ public class MusicListActivity extends BaseActivity  {
 //        adapter = new MusicAdapter(this, filteredMusicList, filteredKeys);
         sortSpinner = findViewById(R.id.sortSpinner);
         musicListView.setAdapter(adapter);
+
+        // In your MainActivity or wherever the user should be able to update their profile
+
+        updateProfileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MusicListActivity.this, UpdateProfileActivity.class);
+            startActivity(intent);
+        });
+
 
         addMusicButton.setOnClickListener(view -> {
             Intent intent = new Intent(MusicListActivity.this, MusicManagementActivity.class);
@@ -211,4 +219,5 @@ public class MusicListActivity extends BaseActivity  {
 
         adapter.updateData(filteredMusicList, filteredKeys);
     }
+
 }

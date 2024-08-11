@@ -62,13 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-//        showPasswordButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                togglePasswordVisibility();
-//            }
-//        });
-
         showPasswordButton.setOnClickListener(v -> togglePasswordVisibility(registerPassword, showPasswordButton));
         showRetypePasswordButton.setOnClickListener(v -> togglePasswordVisibility(registerRetypePassword, showRetypePasswordButton));
     }
