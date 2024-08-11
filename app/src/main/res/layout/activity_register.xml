@@ -40,6 +40,27 @@
             android:contentDescription="Show password" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/retypePassword"
+            android:layout_width="341dp"
+            android:layout_height="50dp"
+            android:hint="Retype Password"
+            android:inputType="textPassword" />
+
+        <ImageButton
+            android:id="@+id/showRetypePasswordButton"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Show password"
+            android:src="@drawable/show_password" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"

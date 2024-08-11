@@ -19,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText registerEmail, registerPhone, registerPassword;
+    private EditText registerEmail, registerPhone, registerPassword, registerRetypePassword;
     private Button registerButton, backToLoginButton;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -27,7 +27,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView customBackButton;
     private ImageButton showPasswordButton;
+    private ImageButton showRetypePasswordButton;
     private boolean isPasswordVisible = false;
+    private boolean isRetypePasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,10 @@ public class RegisterActivity extends AppCompatActivity {
         registerEmail = findViewById(R.id.registerEmail);
         registerPhone = findViewById(R.id.registerPhone);
         registerPassword = findViewById(R.id.registerPassword);
+        registerRetypePassword = findViewById(R.id.retypePassword);
 
+        showPasswordButton = findViewById(R.id.showPasswordButton);
+        showRetypePasswordButton = findViewById(R.id.showRetypePasswordButton);
         registerButton = findViewById(R.id.registerButton);
         customBackButton = findViewById(R.id.customBackButton);
         showPasswordButton = findViewById(R.id.showPasswordButton);
@@ -55,12 +60,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        showPasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                togglePasswordVisibility();
-            }
-        });
+//        showPasswordButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                togglePasswordVisibility();
+//            }
+//        });
+
+        showPasswordButton.setOnClickListener(v -> togglePasswordVisibility(registerPassword, showPasswordButton));
+        showRetypePasswordButton.setOnClickListener(v -> togglePasswordVisibility(registerRetypePassword, showRetypePasswordButton));
     }
 
     @Override
@@ -108,20 +116,52 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    private void togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            // Hide password
-            registerPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            showPasswordButton.setImageResource(R.drawable.show_password); // Show password icon
-        } else {
+//    private void togglePasswordVisibility() {
+//        if (isPasswordVisible) {
+//            // Hide password
+//            registerPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//            showPasswordButton.setImageResource(R.drawable.show_password); // Show password icon
+//        } else {
+//            // Show password
+//            registerPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//            showPasswordButton.setImageResource(R.drawable.show_password); // Hide password icon
+//        }
+//        // Move the cursor to the end of the text
+//        registerPassword.setSelection(registerPassword.length());
+//        isPasswordVisible = !isPasswordVisible;
+//    }
+
+    private void togglePasswordVisibility(EditText passwordField, ImageButton toggleButton) {
+        if (passwordField.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
             // Show password
-            registerPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            showPasswordButton.setImageResource(R.drawable.show_password); // Hide password icon
+            passwordField.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            toggleButton.setImageResource(R.drawable.show_password); // Hide password icon
+        } else {
+            // Hide password
+            passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            toggleButton.setImageResource(R.drawable.show_password); // Show password icon
         }
         // Move the cursor to the end of the text
-        registerPassword.setSelection(registerPassword.length());
-        isPasswordVisible = !isPasswordVisible;
+        passwordField.setSelection(passwordField.length());
     }
 
+    private boolean isValidPassword(String password) {
+        if (password.length() > 18) {
+            return false;
+        }
+
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isLetter(c)) {
+                hasLetter = true;
+            } else if (Character.isDigit(c)) {
+                hasDigit = true;
+            }
+        }
+
+        return hasLetter && hasDigit;
+    }
 }
 
