@@ -3,7 +3,10 @@ package com.example.musicmanagementapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.*;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +18,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton, registerButton;
     private FirebaseAuth mAuth;
     private TextView forgotPasswordTextView;
+    private ImageButton showPasswordButton;
+    private boolean isPasswordVisible = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        showPasswordButton = findViewById(R.id.showPasswordButton);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
         forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
@@ -44,6 +51,13 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(view -> {
             Intent tempIntent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(tempIntent);
+        });
+
+        showPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility();
+            }
         });
 
         forgotPasswordTextView.setOnClickListener(view -> {
@@ -99,5 +113,20 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Error sending reset email", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            // Hide password
+            password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            showPasswordButton.setImageResource(R.drawable.show_password); // Show password icon
+        } else {
+            // Show password
+            password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            showPasswordButton.setImageResource(R.drawable.show_password); // Hide password icon
+        }
+        // Move the cursor to the end of the text
+        password.setSelection(password.length());
+        isPasswordVisible = !isPasswordVisible;
     }
 }

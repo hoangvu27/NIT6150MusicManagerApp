@@ -2,6 +2,8 @@ package com.example.musicmanagementapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Toolbar toolbar;
     private ImageView customBackButton;
+    private ImageButton showPasswordButton;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,10 @@ public class RegisterActivity extends AppCompatActivity {
         registerEmail = findViewById(R.id.registerEmail);
         registerPhone = findViewById(R.id.registerPhone);
         registerPassword = findViewById(R.id.registerPassword);
+
         registerButton = findViewById(R.id.registerButton);
         customBackButton = findViewById(R.id.customBackButton);
+        showPasswordButton = findViewById(R.id.showPasswordButton);
 
         registerButton.setOnClickListener(view -> registerUser());
 
@@ -49,6 +55,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        showPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility();
+            }
+        });
     }
 
     @Override
@@ -94,6 +106,21 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Registration failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            // Hide password
+            registerPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            showPasswordButton.setImageResource(R.drawable.show_password); // Show password icon
+        } else {
+            // Show password
+            registerPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            showPasswordButton.setImageResource(R.drawable.show_password); // Hide password icon
+        }
+        // Move the cursor to the end of the text
+        registerPassword.setSelection(registerPassword.length());
+        isPasswordVisible = !isPasswordVisible;
     }
 
 }
