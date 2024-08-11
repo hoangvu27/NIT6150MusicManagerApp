@@ -102,7 +102,8 @@ public class MusicManagementActivity extends BaseActivity  {
     @Override
     protected void onPause() {
         super.onPause();
-    }
+    }  // when navigate to different page,
+//    it should be onStop(), but the logic here uses onPause when another activity comes to foreground
 
     private void loadMusicData(String musicId) {
         DocumentReference docRef = db.collection("music").document(mAuth.getCurrentUser().getUid())

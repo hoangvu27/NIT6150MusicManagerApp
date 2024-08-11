@@ -70,6 +70,11 @@ public class BaseActivity extends AppCompatActivity {
         resetInactivityTimer(); // Reset the timer when the user returns to the app
     }
 
+    protected void onStop() {
+        super.onStop();
+//        resetInactivityTimer(); // Reset the timer when the user returns to the app
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
