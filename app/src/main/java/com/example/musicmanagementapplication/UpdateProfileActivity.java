@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UpdateProfileActivity extends BaseActivity {
     private static final String EMAIL_TEXT = "email_text";
@@ -56,6 +63,7 @@ public class UpdateProfileActivity extends BaseActivity {
             emailEditText.setText(savedInstanceState.getString(EMAIL_TEXT, ""));
             phoneEditText.setText(savedInstanceState.getString(PHONE_TEXT, ""));
         }
+        loadUserProfile();
     }
 
     @Override
@@ -85,6 +93,35 @@ public class UpdateProfileActivity extends BaseActivity {
     }  // when navigate to different page,
 //    it should be onStop(), but the logic here uses onPause when another activity comes to foreground
 
+    private void loadUserProfile() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // Set the current email
+            emailEditText.setText(user.getEmail());
+
+            // Retrieve the current phone number from Firestore
+            String userId = user.getUid();
+            db.collection("users").document(userId).get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String phone = document.getString("phone");
+                                if (phone != null) {
+                                    phoneEditText.setText(phone);
+                                } else {
+                                    phoneEditText.setHint("Enter your phone number");
+                                }
+                            } else {
+                                phoneEditText.setHint("Enter your phone number");
+                            }
+                        } else {
+                            Toast.makeText(UpdateProfileActivity.this, "Failed to load user profile", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
     private void updateProfile() {
         String newEmail = emailEditText.getText().toString().trim();
         String newPhone = phoneEditText.getText().toString().trim();
@@ -111,7 +148,6 @@ public class UpdateProfileActivity extends BaseActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(UpdateProfileActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
-                            navigateBackToMusicList();
                         } else {
                             Toast.makeText(UpdateProfileActivity.this, "Failed to update email", Toast.LENGTH_SHORT).show();
                         }
@@ -124,12 +160,12 @@ public class UpdateProfileActivity extends BaseActivity {
         if (user != null) {
             String userId = user.getUid();
 
-            // Assuming you are using Firestore to store additional user information
+//             Assuming you are using Firestore to store additional user information
             db.collection("users").document(userId)
                     .update("phone", newPhone)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(UpdateProfileActivity.this, "Phone number updated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
                             navigateBackToMusicList();
                         } else {
                             Toast.makeText(UpdateProfileActivity.this, "Failed to update phone number", Toast.LENGTH_SHORT).show();
