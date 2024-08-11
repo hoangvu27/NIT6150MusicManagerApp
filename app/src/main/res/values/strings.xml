@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MusicManagementApplication</string>
+    <string-array name="sort_options">
+        <item>Sort by Title</item>
+        <item>Sort by Artist</item>
+    </string-array>
+</resources>

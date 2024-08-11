@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "538531523198",
+    "project_id": "musicmanagerapp",
+    "storage_bucket": "musicmanagerapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538531523198:android:b3b28fefdffc1a8bda462f",
+        "android_client_info": {
+          "package_name": "com.example.musicmanagementapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB48LHDt1QRY4V5ZxWprtTamVfJweq9tYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
