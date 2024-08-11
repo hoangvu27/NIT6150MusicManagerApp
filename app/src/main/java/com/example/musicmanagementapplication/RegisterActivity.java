@@ -2,9 +2,11 @@ package com.example.musicmanagementapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
@@ -90,6 +92,9 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "All fields are required.", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (!validateAndRegister()) {
+            return;
+        };
 
         mAuth.createUserWithEmailAndPassword(emailStr, passwordStr)
                 .addOnCompleteListener(this, task -> {
@@ -116,20 +121,30 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-//    private void togglePasswordVisibility() {
-//        if (isPasswordVisible) {
-//            // Hide password
-//            registerPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-//            showPasswordButton.setImageResource(R.drawable.show_password); // Show password icon
-//        } else {
-//            // Show password
-//            registerPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-//            showPasswordButton.setImageResource(R.drawable.show_password); // Hide password icon
-//        }
-//        // Move the cursor to the end of the text
-//        registerPassword.setSelection(registerPassword.length());
-//        isPasswordVisible = !isPasswordVisible;
-//    }
+    private boolean validateAndRegister() {
+        String email = registerEmail.getText().toString().trim();
+        String password = registerPassword.getText().toString().trim();
+        String retypePassword = registerRetypePassword.getText().toString().trim();
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!isValidPassword(password)) {
+            Toast.makeText(this, "Password must be at most 18 characters & contain both numbers and letters", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!password.equals(retypePassword)) {
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Proceed with registration logic, such as saving the user's details in the database
+//        Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
+        return true;
+    }
 
     private void togglePasswordVisibility(EditText passwordField, ImageButton toggleButton) {
         if (passwordField.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
