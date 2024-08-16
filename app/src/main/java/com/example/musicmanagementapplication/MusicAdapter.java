@@ -88,8 +88,7 @@ public class MusicAdapter extends BaseAdapter {
     public void updateData(List<Music> newMusicList, List<String> newMusicKeys) {
         this.musicList.clear();
         this.musicKeys.clear();
-        this.musicList.addAll(newMusicList);
-        this.musicKeys.addAll(newMusicKeys);
+
         for (int i = 0; i < newMusicList.size(); i++) {
             Music originalMusic = newMusicList.get(i);
             Music musicCopy = new Music(originalMusic.getTitle(), originalMusic.getArtist());

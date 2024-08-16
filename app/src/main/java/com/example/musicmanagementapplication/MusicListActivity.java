@@ -190,9 +190,10 @@ public class MusicListActivity extends BaseActivity  {
                             Music music = document.toObject(Music.class);
                             musicList.add(music);
                             musicKeys.add(document.getId());
+                            Log.d("tag", String.valueOf(musicList.size()));
                         }
 //                        filterMusic(searchView.getQuery().toString());
-                        filterMusic("");
+                        filterMusic(searchView.getQuery().toString());
                     } else {
                         Toast.makeText(MusicListActivity.this, "Failed to load music.", Toast.LENGTH_SHORT).show();
                     }
@@ -216,7 +217,6 @@ public class MusicListActivity extends BaseActivity  {
                 }
             }
         }
-
         adapter.updateData(filteredMusicList, filteredKeys);
     }
 
