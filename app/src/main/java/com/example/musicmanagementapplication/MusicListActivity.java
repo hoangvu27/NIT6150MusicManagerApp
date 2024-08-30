@@ -4,17 +4,22 @@ package com.example.musicmanagementapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +35,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import androidx.annotation.NonNull;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-public class MusicListActivity extends BaseActivity  {
+public class MusicListActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener  {
     private static final int MUSIC_MANAGEMENT_REQUEST_CODE = 1;
     private static final String QUERY_KEY = "query_key";
 
@@ -48,6 +54,10 @@ public class MusicListActivity extends BaseActivity  {
     private String currentQuery = "";
     private Spinner sortSpinner;
 
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +69,9 @@ public class MusicListActivity extends BaseActivity  {
 
         musicListView = findViewById(R.id.musicListView);
         addMusicButton = findViewById(R.id.addMusicButton);
-        logoutButton = findViewById(R.id.logoutButton);
         searchView = findViewById(R.id.searchView);
-        updateProfileButton = findViewById(R.id.updateProfileButton);
+//        logoutButton = findViewById(R.id.logoutButton);
+//        updateProfileButton = findViewById(R.id.updateProfileButton);
 
         musicList = new ArrayList<>();
         musicKeys = new ArrayList<>();
@@ -72,10 +82,37 @@ public class MusicListActivity extends BaseActivity  {
 
         // In your MainActivity or wherever the user should be able to update their profile
 
-        updateProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MusicListActivity.this, UpdateProfileActivity.class);
-            startActivity(intent);
-        });
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Set the navigation view listener
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Set up the toggle for opening and closing the drawer
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Handle the navigation button click
+        ImageButton navButton = findViewById(R.id.nav_button);
+        navButton.setOnClickListener(view -> drawerLayout.openDrawer(navigationView));
+
+//        updateProfileButton.setOnClickListener(v -> {
+//            Intent intent = new Intent(MusicListActivity.this, UpdateProfileActivity.class);
+//            startActivity(intent);
+//        });
+//
+//        logoutButton.setOnClickListener(view -> {
+//            mAuth.signOut();
+//            Intent intent = new Intent(MusicListActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();  // Close the current activity
+//        });
 
 
         addMusicButton.setOnClickListener(view -> {
@@ -84,12 +121,7 @@ public class MusicListActivity extends BaseActivity  {
 //            startActivity(intent);
 //            finish();  // this line really causes the problem
         });
-        logoutButton.setOnClickListener(view -> {
-            mAuth.signOut();
-            Intent intent = new Intent(MusicListActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();  // Close the current activity
-        });
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -220,4 +252,22 @@ public class MusicListActivity extends BaseActivity  {
         adapter.updateData(filteredMusicList, filteredKeys);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int itemId = item.getItemId();
+        if (itemId == R.id.nav_edit_profile) {
+            Intent profileIntent = new Intent(MusicListActivity.this, UpdateProfileActivity.class);
+            startActivity(profileIntent);
+        } else if (itemId == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent logoutIntent = new Intent(MusicListActivity.this, LoginActivity.class);
+            startActivity(logoutIntent);
+            finish(); // Close MusicListActivity
+        } else {
+            Toast.makeText(this, "Unknown Option", Toast.LENGTH_SHORT).show();
+        }
+        drawerLayout.closeDrawer(navigationView); // Close drawer after selection
+        return true;
+    }
 }

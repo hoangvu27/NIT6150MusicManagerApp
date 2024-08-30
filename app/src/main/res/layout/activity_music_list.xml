@@ -2,11 +2,19 @@
 <!--
 This file is to view list of songs  ->  need to rename file ->  song-list-view , music -> song
 -->
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MusicListActivity">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,24 +22,39 @@ This file is to view list of songs  ->  need to rename file ->  song-list-view ,
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/colorAccent"
-            android:padding="12dp"
-            android:text="Log Out"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:layout_weight="1"/>
+            android:background="@android:color/transparent">
 
-        <Button
-            android:id="@+id/updateProfileButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Update Profile"
-            android:layout_weight="1"/>
+            <ImageButton
+                android:id="@+id/nav_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/navigation_icon" /> <!-- Replace with your icon -->
+
+        </androidx.appcompat.widget.Toolbar>
+
+<!--        <Button-->
+<!--            android:id="@+id/logoutButton"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:backgroundTint="@color/colorAccent"-->
+<!--            android:padding="12dp"-->
+<!--            android:text="Log Out"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_weight="1"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/updateProfileButton"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Update Profile"-->
+<!--            android:layout_weight="1"/>-->
 
     </LinearLayout>
 
@@ -59,6 +82,13 @@ This file is to view list of songs  ->  need to rename file ->  song-list-view ,
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
-
 </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

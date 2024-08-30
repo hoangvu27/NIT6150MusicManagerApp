@@ -44,6 +44,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.annotation:annotation:1.1.0")
+    implementation ("com.google.android.material:material:1.9.0")
+    implementation ("androidx.drawerlayout:drawerlayout:1.2.0")   // DrawerLayout for Navigation Drawer
 //    implementation("androidx.activity:activity:1.8.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

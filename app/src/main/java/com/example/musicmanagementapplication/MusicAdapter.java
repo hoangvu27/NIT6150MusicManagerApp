@@ -17,15 +17,9 @@ public class MusicAdapter extends BaseAdapter {
     private Context context;
     private List<Music> musicList;
     private List<String> musicKeys;
-    private List<Music> filterMusic;
-    private List<String> filterKey;
 
     public MusicAdapter(Context context, List<Music> musicList, List<String> musicKeys) {
         this.context = context;
-//        this.musicList = musicList;
-//        this.musicKeys = musicKeys;
-//        filterMusic = musicList;
-//        filterKey = musicKeys;
 
         this.musicList = new ArrayList<>(); // Initialize internal lists
         this.musicKeys = new ArrayList<>();
