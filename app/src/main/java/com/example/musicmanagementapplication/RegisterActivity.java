@@ -76,6 +76,9 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Register users
+     */
     private void registerUser() {
         String emailStr = registerEmail.getText().toString();
         String phoneStr = registerPhone.getText().toString();
@@ -114,6 +117,10 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * validate register credentials
+     * @return false if any field of credential is invalid. Otherwise, true
+     */
     private boolean validateAndRegister() {
         String email = registerEmail.getText().toString().trim();
         String password = registerPassword.getText().toString().trim();
@@ -153,6 +160,11 @@ public class RegisterActivity extends AppCompatActivity {
         passwordField.setSelection(passwordField.length());
     }
 
+    /**
+     * check if password is valid
+     * @param password the password that needs to be validated
+     * @return true if password is valid. Otherwise, false
+     */
     private boolean isValidPassword(String password) {
         if (password.length() > 18) {
             return false;

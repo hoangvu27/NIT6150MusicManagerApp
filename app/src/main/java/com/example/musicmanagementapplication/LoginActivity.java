@@ -65,6 +65,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Log in user with credentials
+     */
     private void loginUser() {
         String emailStr = email.getText().toString();
         String passwordStr = password.getText().toString();
@@ -80,8 +83,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Create an AlertDialog to prompt the user for their email
+     */
     private void showForgotPasswordDialog() {
-        // Create an AlertDialog to prompt the user for their email
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Reset Password");
 
@@ -104,6 +109,10 @@ public class LoginActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * reset password
+     * @param email the email of user that will receive link to reset password
+     */
     private void resetPassword(String email) {
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
@@ -115,6 +124,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * show or hide password
+     */
     private void togglePasswordVisibility() {
         if (isPasswordVisible) {
             // Hide password

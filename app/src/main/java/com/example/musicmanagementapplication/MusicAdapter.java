@@ -33,6 +33,10 @@ public class MusicAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Get music size
+     * @return the size of music list
+     */
     @Override
     public int getCount() {
         return musicList.size();
@@ -48,6 +52,13 @@ public class MusicAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Get view of music list
+     * @param position the position of music in the list
+     * @param convertView the final view of music list that will be displaued
+     * @param parent the parent view of all layouts and UI components
+     * @return return the view of music list
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {

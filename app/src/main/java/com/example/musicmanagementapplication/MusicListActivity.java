@@ -143,6 +143,9 @@ public class MusicListActivity extends BaseActivity implements NavigationView.On
         loadMusic();
     }
 
+    /**
+     * Generate sort function to sort music by title and by artist
+     */
     private void setupSortSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.sort_options, android.R.layout.simple_spinner_item);
@@ -167,20 +170,35 @@ public class MusicListActivity extends BaseActivity implements NavigationView.On
             }
         });
     }
+
+    /**
+     * Sort music by title
+     */
     private void sortByTitle() {
         Collections.sort(musicList, Comparator.comparing(music -> music.getTitle().toLowerCase()));
     }
 
+    /**
+     * Sort music by artise
+     */
     private void sortByArtist() {
         Collections.sort(musicList, Comparator.comparing(music -> music.getArtist().toLowerCase()));
     }
 
+    /**
+     * Save the state of ap
+     * @param outState the state that will be saved
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(QUERY_KEY, currentQuery);
     }
 
+    /**
+     * Restore app state
+     * @param savedInstanceState the state of app
+     */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -195,11 +213,20 @@ public class MusicListActivity extends BaseActivity implements NavigationView.On
         loadMusic();  // Reload music list every time the activity resumes
     }
 
+    /**
+     * App pause temporarily when it is running in the background
+     */
     @Override
     protected void onPause() {
         super.onPause();
     }
 
+    /**
+     * Load music after successful music creation
+     * @param requestCode the code of request
+     * @param resultCode the code of result
+     * @param data the data that will be loaded
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d("tag" , String.valueOf(requestCode));
@@ -209,6 +236,9 @@ public class MusicListActivity extends BaseActivity implements NavigationView.On
         }
     }
 
+    /**
+     * Load all saved music
+     */
     private void loadMusic() {
         db.collection("music").get();
         db.collection("music").document(mAuth.getCurrentUser().getUid())
@@ -232,6 +262,10 @@ public class MusicListActivity extends BaseActivity implements NavigationView.On
                 });
     }
 
+    /**
+     * Filter music with query on the search bar
+     * @param query the query used to filter music
+     */
     private void filterMusic(String query) {
         List<Music> filteredMusicList = new ArrayList<>();
         List<String> filteredKeys = new ArrayList<>();
@@ -252,6 +286,11 @@ public class MusicListActivity extends BaseActivity implements NavigationView.On
         adapter.updateData(filteredMusicList, filteredKeys);
     }
 
+    /**
+     * Give functions to items on the navigation bar
+     * @param item The selected item
+     * @return true when an item is selected
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.

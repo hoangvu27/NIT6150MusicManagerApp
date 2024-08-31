@@ -120,6 +120,9 @@ public class MusicManagementActivity extends BaseActivity  {
         });
     }
 
+    /**
+     * Save a new music
+     */
     private void saveMusic() {
         String title = musicTitle.getText().toString();
         String artist = musicArtist.getText().toString();

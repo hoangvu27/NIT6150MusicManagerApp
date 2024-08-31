@@ -122,6 +122,9 @@ public class UpdateProfileActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Update profile
+     */
     private void updateProfile() {
         String newEmail = emailEditText.getText().toString().trim();
         String newPhone = phoneEditText.getText().toString().trim();
@@ -135,7 +138,6 @@ public class UpdateProfileActivity extends BaseActivity {
             Toast.makeText(this, "Please enter your phone number", Toast.LENGTH_SHORT).show();
             return;
         }
-
         updateEmail(newEmail);
         updatePhoneNumber(newPhone);
     }
@@ -155,6 +157,10 @@ public class UpdateProfileActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Update phone number
+     * @param newPhone a new phone number
+     */
     private void updatePhoneNumber(String newPhone) {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -174,6 +180,9 @@ public class UpdateProfileActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Navigate back to music list
+     */
     private void navigateBackToMusicList() {
         Intent intent = new Intent(UpdateProfileActivity.this, MusicListActivity.class);
         startActivity(intent);
