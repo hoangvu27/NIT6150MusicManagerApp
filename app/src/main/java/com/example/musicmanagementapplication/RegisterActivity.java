@@ -32,6 +32,10 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageButton showRetypePasswordButton;
     private boolean isPasswordVisible = false;
     private boolean isRetypePasswordVisible = false;
+    private static int passValid = 0;
+    private static int passLengthError = 1;
+    private static int passDigit = 2;
+    private static int passLetter = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,10 +135,21 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
-        if (!isValidPassword(password)) {
-            Toast.makeText(this, "Password must be at most 18 characters & contain both numbers and letters", Toast.LENGTH_SHORT).show();
-            return false;
+        switch (isValidPassword(password)) {
+            case 1:
+                Toast.makeText(this, "Password must be at most 18 characters" , Toast.LENGTH_SHORT).show();
+                return false;
+            case 2:
+                Toast.makeText(this, "Password must have numbers" , Toast.LENGTH_SHORT).show();
+                return false;
+            case 3:
+                Toast.makeText(this, "Password must have letters" , Toast.LENGTH_SHORT).show();
+                return false;
         }
+//        if (!) {
+//            Toast.makeText(this, "Password must be at most 18 characters & contain both numbers and letters", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
 
         if (!password.equals(retypePassword)) {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
@@ -165,9 +180,9 @@ public class RegisterActivity extends AppCompatActivity {
      * @param password the password that needs to be validated
      * @return true if password is valid. Otherwise, false
      */
-    private boolean isValidPassword(String password) {
+    private int isValidPassword(String password) {
         if (password.length() > 18) {
-            return false;
+            return passLengthError;
         }
 
         boolean hasLetter = false;
@@ -180,8 +195,13 @@ public class RegisterActivity extends AppCompatActivity {
                 hasDigit = true;
             }
         }
+        if ( hasDigit == false ) {
+            return passDigit;
+        } else if ( hasLetter == false) {
+            return passLetter;
+        }
 
-        return hasLetter && hasDigit;
+        return passValid;
     }
 }
 

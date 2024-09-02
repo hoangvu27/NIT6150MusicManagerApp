@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
 }
 
@@ -45,7 +46,9 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.annotation:annotation:1.1.0")
     implementation ("com.google.android.material:material:1.9.0")
-    implementation ("androidx.drawerlayout:drawerlayout:1.2.0")   // DrawerLayout for Navigation Drawer
+    implementation ("androidx.drawerlayout:drawerlayout:1.2.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.4.2")
+    implementation ("com.google.firebase:firebase-analytics:21.4.0")// DrawerLayout for Navigation Drawer
 //    implementation("androidx.activity:activity:1.8.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

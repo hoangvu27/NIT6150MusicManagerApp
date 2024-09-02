@@ -28,7 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Delete"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:backgroundTint="@android:color/holo_red_light"/>
 
     <Button
         android:id="@+id/viewMusicListButton"

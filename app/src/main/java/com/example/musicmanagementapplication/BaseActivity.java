@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class BaseActivity extends AppCompatActivity {
 
-    private static final long INACTIVITY_TIMEOUT = 12 * 1000; // 15 minutes
+    private static final long INACTIVITY_TIMEOUT = 25 * 1000; // 15 minutes
     private boolean shouldLogout = true;
     private final Handler inactivityHandler = new Handler();
     private final Runnable logoutRunnable = new Runnable() {
