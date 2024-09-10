@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -33,6 +35,7 @@ public class UpdateProfileActivity extends BaseActivity {
 
     private EditText emailEditText;
     private EditText phoneEditText;
+    private EditText updatePasswordEditText;
     private Button updateButton;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -48,6 +51,7 @@ public class UpdateProfileActivity extends BaseActivity {
 
         emailEditText = findViewById(R.id.updateEmailEditText);
         phoneEditText = findViewById(R.id.updatePhoneEditText);
+        updatePasswordEditText = findViewById(R.id.updatePasswordEditText);
         updateButton = findViewById(R.id.updateButton);
         customBackButton = findViewById(R.id.customBackButton);
 
@@ -128,6 +132,7 @@ public class UpdateProfileActivity extends BaseActivity {
     private void updateProfile() {
         String newEmail = emailEditText.getText().toString().trim();
         String newPhone = phoneEditText.getText().toString().trim();
+        String currentPassword = updatePasswordEditText.getText().toString().trim();
 
         if (TextUtils.isEmpty(newEmail) || !Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
             Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
@@ -138,22 +143,43 @@ public class UpdateProfileActivity extends BaseActivity {
             Toast.makeText(this, "Please enter your phone number", Toast.LENGTH_SHORT).show();
             return;
         }
-        updateEmail(newEmail);
+        if (TextUtils.isEmpty(currentPassword)) {
+            Toast.makeText(this, "Please enter your password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        updateEmail(newEmail, currentPassword );
         updatePhoneNumber(newPhone);
     }
 
 
-    private void updateEmail(String newEmail) {
+    private void updateEmail(String newEmail, String currentPassword) {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            user.updateEmail(newEmail)
+            // Reauthenticate the user
+            AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+            user.reauthenticate(credential)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(UpdateProfileActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
+                            // Update email
+                            user.updateEmail(newEmail)
+                                    .addOnCompleteListener(updateTask -> {
+                                        if (updateTask.isSuccessful()) {
+                                            Toast.makeText(UpdateProfileActivity.this, "Email updated successfully.", Toast.LENGTH_SHORT).show();
+                                            // Navigate back or update UI as needed
+                                        } else {
+                                            Log.e("UpdateProfile", "Failed to update email: " + updateTask.getException().getMessage());
+                                            Toast.makeText(UpdateProfileActivity.this, "Failed to update email: " + updateTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                         } else {
-                            Toast.makeText(UpdateProfileActivity.this, "Failed to update email", Toast.LENGTH_SHORT).show();
+                            Log.e("UpdateProfile", "Reauthentication failed: " + task.getException().getMessage());
+                            Toast.makeText(UpdateProfileActivity.this, "Reauthentication failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
+        } else {
+            Log.e("UpdateProfile", "No authenticated user found.");
+            Toast.makeText(this, "No authenticated user found.", Toast.LENGTH_LONG).show();
         }
     }
 

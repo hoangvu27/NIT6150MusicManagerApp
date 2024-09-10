@@ -19,6 +19,13 @@
         android:hint="New Phone Number"
         android:inputType="phone" />
 
+    <EditText
+        android:id="@+id/updatePasswordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Current Password"
+        android:inputType="textPassword" />
+
     <Button
         android:id="@+id/updateButton"
         android:layout_width="match_parent"
